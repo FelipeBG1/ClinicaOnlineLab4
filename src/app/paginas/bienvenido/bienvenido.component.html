@@ -1,0 +1,16 @@
+<app-navbar></app-navbar>
+<div class="d-flex w-100 p-3 mx-auto flex-column text-center pag">
+    <main role="main" class="inner cover blur ps-3 pe-3 pb-2 pt-5 pb-5" style=" width: 75%; margin-left: auto; margin-right: auto;">
+      <h1 class="cover-heading">Bienvenido a la Clínica del Dr. Bustos Gil</h1>
+      <p class="lead pt-4">Como verá en la parte superior se encuentra una barra en la que estarán los diferentes accesos a las areas de esta clínica, sino aqui debajo le dejamos dos botnes uno para logearse y otro para registrarse. 
+          No se olvide de pasar por recepción antes de seguir. 
+          Muchas gracias y esperamos que tenga buen dia o buena tarde.</p>
+    </main>
+    <div class="row justify-content-around text-center mt-5" *ngIf='this.as.logeado == ""'>
+        <div class="col-12">
+            <button class="col-5 button fs-3 me-2 blur" (click)='this.navegar(1)'>Login</button>
+            <button class="col-5 button fs-3 ms-2 blur" (click)='this.navegar(2)'>Registro</button>
+        </div>
+    </div>
+</div>
+

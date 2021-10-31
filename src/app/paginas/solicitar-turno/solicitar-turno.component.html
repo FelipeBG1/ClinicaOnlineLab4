@@ -1,0 +1,92 @@
+<app-navbar></app-navbar>
+<div *ngIf="this.as.loading">
+  <div *ngIf="this.as.loading">
+      <app-spinner></app-spinner>
+  </div>
+</div>
+<div class="container">
+    <div class="row justify-content-center text-center" *ngIf='this.as.logeado.perfil == "admin"'>
+    <div class="card button col-5 ms-2 me-2" style="border-radius: 2px;" (click)="this.cargarPacientes()">
+      <div class="card-title" >
+          <img class="card-img-top" src="../../../assets/paciente2.jpg" style="width: 370px; height: 280px; border-radius: 2px;" >
+      </div>
+      <div class="card-body">   
+          <h6 class="card-title fs-4 mt-2" style="color: rgb(231, 226, 226);">Paciente</h6>
+      </div>
+  </div>
+      <div class="p-3" *ngIf='this.tablaPacientes'>
+        <div class="text-light mt-2">
+          <div class="row justify-content-around m-2 text-center">            
+                  <div class="card bg-dark text-white mt-2 col-4 " style="width: 20em; height: 12em; border-color: rgba(118, 29, 170, 0.925); cursor: pointer;"
+                  *ngFor='let paciente of this.pacientes'>
+                      <div class="card-body" (click)='this.pacienteActual = paciente'>
+                        <div class="row">
+                          <div class="col-6 d-flex">
+                            <img class="card-img-top col-5 me-3" src="{{paciente.imagenes[0]}}" width="20px" height="120px">
+                            <img class="card-img-top col-5 ms-3" src="{{paciente.imagenes[1]}}" width="20px" height="120px">
+                          </div>
+                        </div>
+                          <h6 class="card-title mt-3">{{paciente.nombre}} {{paciente.apellido}}</h6>
+                      </div>
+                  </div>
+          </div> 
+      </div>
+      </div>
+    </div>    
+    <div class="row justify-content-center text-center" *ngIf='this.as.logeado.perfil == "admin" && this.pacienteActual != ""'>
+      <div class="card button col-5 ms-2" style="border-radius: 2px;" (click)="this.cargarEspecialistas()">
+        <div class="card-title">
+            <img class="card-img-top" src="../../../assets/especialista2.jpg" style="height: 280px; border-radius: 2px;">
+        </div>
+        <div class="card-body">
+            <h6 class="card-title fs-4 mt-2 mb-0" style="color: rgb(231, 226, 226);">Especialista</h6>
+        </div>
+    </div>
+    </div>   
+    <div class="row justify-content-center text-center" *ngIf='this.as.logeado.perfil != "admin"'>
+      <div class="card button col-5 ms-2" style="border-radius: 2px;" (click)="this.cargarEspecialistas()">
+        <div class="card-title">
+            <img class="card-img-top" src="../../../assets/especialista2.jpg" style="height: 280px; border-radius: 2px;">
+        </div>
+        <div class="card-body">
+            <h6 class="card-title fs-4 mt-2 mb-0" style="color: rgb(231, 226, 226);">Especialista</h6>
+        </div>
+    </div>
+  </div>   
+  </div>
+    <br>
+  <div div *ngIf="this.tablaEspecialistas" style="background-color: rgba(0, 0, 0, 0.623);">
+    <div class="p-3">
+      <div class="text-light mt-2">
+        <div class="row justify-content-around m-2 text-center">            
+                <div class="card bg-dark text-white mt-2 me-3 col-6 " style="width: 12em; height: 17em; border-color: rgba(118, 29, 170, 0.925); cursor: pointer;"
+                *ngFor='let especialista of this.arrayEspecialistasTodos'>
+                    <div class="card-body" (click)='this.seleccionarEspecialista(especialista)'>
+                        <img class="card-img-top" src="{{especialista.imagen}}" width="10px" height="120px">
+                        <h6 class="card-title mt-3">{{especialista.nombre}} {{especialista.apellido}}</h6>
+                        <p class="card-text">
+                          <div>
+                            <b>Especialidad: </b> {{especialista.especialidad.nombre}}
+                        </div>
+                    </div>
+                </div>
+        </div> 
+      </div>
+    </div>
+    </div>
+<br>
+<div *ngIf="verTurnos" style="background-color: rgba(0, 0, 0, 0.63);">
+  <div class="row justify-content-around">            
+    <div class="mt-2 ml-1 col-7 text-center" style="overflow-y: auto;">
+      <button type="button" class="button3 ms-3 me-3" *ngFor='let dia of this.diasArrayFiltrados' (click)='this.mostrarHorarios(dia)'>{{dia}}</button>
+    </div>
+</div>
+
+<div *ngIf="verHoras" style="background-color: rgba(0, 0, 0, 0.63);">
+  <div class="row justify-content-around">            
+    <div class="mt-2 ml-1 col-7 text-center" style="overflow-y: auto;">
+      <button type="button" class="button3 ms-3 me-3" *ngFor='let hora of this.horasArray' (click)='this.seleccionarTurno(hora)'>{{hora}}</button>
+    </div>
+    <p class="text-light text-center fs-4" *ngIf='this.horasArray.length == 0'>{{this.especialistaSeleccionado.nombre}} {{this.especialistaSeleccionado.apellido}} ya no tiene horarios para ese dia</p>
+</div>
+  
