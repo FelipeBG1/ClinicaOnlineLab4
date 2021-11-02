@@ -17,9 +17,14 @@ export class SeccionPacientesComponent implements OnInit {
   mostrarPacientes : boolean = false;
   mostrarHC : boolean = false;
   pacienteSeleccionado : any = "";
+  datosCargadosP : boolean;
+  datosCargadosT : boolean ;
+
 
   constructor(public as : AuthService, private fs : FirestoreService, private ts : TurnoService) 
   {
+    this.datosCargadosP = false;
+    this.datosCargadosT = false;
     this.fs.traerPacientes().subscribe(value =>{
       this.pacientes = value;
     });
@@ -27,12 +32,31 @@ export class SeccionPacientesComponent implements OnInit {
     this.ts.traerTurnos().subscribe(value =>{
       this.turnos = value;
     });
+
   }
 
   ngOnInit(): void {
   }
 
   listarPacientes()
+  {
+    if(this.datosCargadosP && this.datosCargadosP)
+    {
+      this.mostrarPacientes = !this.mostrarPacientes;
+    }
+    else
+    {
+      this.cargarDatos();
+    }
+  }
+
+  mostrarHistoriaClinica(paciente : any)
+  {
+    this.pacienteSeleccionado = paciente;
+    this.mostrarHC = !this.mostrarHC;
+  }
+
+  cargarDatos()
   {
     for(let turno of this.turnos) 
     {
@@ -53,12 +77,7 @@ export class SeccionPacientesComponent implements OnInit {
       }  
     }
 
-    this.mostrarPacientes = true;
-  }
-
-  mostrarHistoriaClinica(paciente : any)
-  {
-    this.pacienteSeleccionado = paciente;
-    this.mostrarHC = !this.mostrarHC;
+    this.datosCargadosP = true;
+    this.datosCargadosT = true;
   }
 }

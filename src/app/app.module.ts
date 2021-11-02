@@ -36,6 +36,7 @@ import { HoraPipe } from './pipes/hora.pipe';
 import { ArmarDatosDinamicosPipe } from './pipes/armar-datos-dinamicos.pipe';
 import { SeccionPacientesComponent } from './paginas/seccion-pacientes/seccion-pacientes.component';
 import { ErrorEspecialistaComponent } from './paginas/error-especialista/error-especialista.component';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({

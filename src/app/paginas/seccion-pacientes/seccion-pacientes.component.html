@@ -38,11 +38,27 @@
                       </p>
                    </div>
                   <div class="card-body">
-                      <p class="fs-5">Paciente: {{this.pacienteSeleccionado.nombre}}  {{this.pacienteSeleccionado.apellido}}</p>
-                      <p class="fs-5">Altura: {{hc.altura}}</p> 
-                      <p class="fs-5">Peso: {{hc.peso}}</p>
-                      <p class="fs-5">Temperatura: {{hc.temperatura}}</p>
-                      <p class="fs-5">Presión: {{hc.presion}}</p>
+                    <p class="fs-5">
+                      <b>Altura:</b> {{hc.altura}}
+                    </p>
+                    <p class="fs-5">
+                      <b>Peso:</b> {{hc.peso}}
+                    </p>
+                    <p class="fs-5">
+                      <b>Temperatura:</b> {{hc.temperatura}}
+                    </p>
+                    <p class="fs-5">
+                      <b>Presión:</b> {{hc.presion}}
+                    </p>
+                    <p class="fs-5" *ngIf='hc.datoDinamico1 != ""'>
+                      <b>{{hc?.datoDinamico1?.clave}}:</b> {{hc?.datoDinamico1?.valor}}
+                    </p>   
+                    <p class="fs-5" *ngIf='hc.datoDinamico2 != ""'>
+                      <b>{{hc?.datoDinamico2?.clave}}:</b> {{hc?.datoDinamico2?.valor}}
+                    </p> 
+                    <p class="fs-5" *ngIf='hc.datoDinamico3 != ""'>
+                      <b>{{hc?.datoDinamico3?.clave}}:</b> {{hc?.datoDinamico3?.valor}}
+                    </p>
                   </div>
               </div>
       </div> 

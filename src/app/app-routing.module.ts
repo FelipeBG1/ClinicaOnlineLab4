@@ -26,20 +26,20 @@ import { EspecialidadesService } from './servicios/especialidades.service';
 
 const routes: Routes = [
   { path: '', pathMatch:'full', redirectTo: 'bienvenido'},
-  {path: 'registro', component: PerfilesRegistroComponent},
-  {path: 'bienvenido', component: BienvenidoComponent},
-  {path: 'login', component: LoginComponent},
+  {path: 'registro', component: PerfilesRegistroComponent, data: { animation: 'RegistroPage' }},
+  {path: 'bienvenido', component: BienvenidoComponent, data: { animation: 'BienvenidoPage' }},
+  {path: 'login', component: LoginComponent, data: { animation: 'LoginPage' }},
   {path: 'usuarios', loadChildren: () => import('./modulos/usuarios/usuarios.module').then(m => m.UsuariosModule),canActivate: [LogedGuard,AdminGuard]},
-  {path: 'perfil', component: MiPerfilComponent},
+  {path: 'perfil', component: MiPerfilComponent ,data: { animation: 'MiPerfilPage' }},
   {path: 'turnos', loadChildren: () => import('./modulos/turnos/turnos.module').then(m => m.TurnosModule),canActivate: [LogedGuard]},
-  {path: 'perfilGeneral', component: PerfilComponent,canActivate: [LogedGuard]},
+  {path: 'perfilGeneral', component: PerfilComponent,canActivate: [LogedGuard] ,data: { animation: 'PerfilGeneralPage' }},
   {path: 'pacientes', component: SeccionPacientesComponent,canActivate: [LogedGuard,EspecialistaGuard]},
-  {path: 'errorLogeo', component: ErrorLogeoComponent},
-  {path: 'errorAdmin', component: ErrorAdminComponent},
-  {path: 'errorEspecialista', component: ErrorEspecialistaComponent},
-  {path: 'errorPacienteEspecialista', component: ErrorPacienteEspecialistaComponent},
-  {path: 'errorPacienteAdministrador', component: ErrorPacienteAdministradorComponent},
-  {path: '**', component: ErrorComponent},
+  {path: 'errorLogeo', component: ErrorLogeoComponent,data: { animation: 'ErrorLogeoPage' }},
+  {path: 'errorAdmin', component: ErrorAdminComponent,data: { animation: 'ErrorAdminPage' }},
+  {path: 'errorEspecialista', component: ErrorEspecialistaComponent,data: { animation: 'ErrorEPage' }},
+  {path: 'errorPacienteEspecialista', component: ErrorPacienteEspecialistaComponent,data: { animation: 'ErrorPEPage' }},
+  {path: 'errorPacienteAdministrador', component: ErrorPacienteAdministradorComponent,data: { animation: 'ErrorPAPage' }},
+  {path: '**', component: ErrorComponent,data: { animation: 'ErrorPage' }},
 ];
 
 @NgModule({

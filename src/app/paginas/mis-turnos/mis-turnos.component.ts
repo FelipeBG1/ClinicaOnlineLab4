@@ -33,11 +33,12 @@ export class MisTurnosComponent implements OnInit {
   rechazado : boolean = false;
   atencionAdministracion : string = "";
   respetoHorario : string = "";
-  datosDinamicos : any[] = [];
-  datos : any = [];
   pacienteAModificar : any = "";
   datoABuscar : any = "";
   turnosFiltradosBusqueda : any = [];
+  dato1 : any = "";
+  dato2 : any = "";
+  dato3 : any = "";
 
   constructor(public as : AuthService, private turnoService : TurnoService, 
     private fb : FormBuilder,private fb2 : FormBuilder,private fb3 : FormBuilder, 
@@ -139,7 +140,38 @@ export class MisTurnosComponent implements OnInit {
                 {
                   this.todosLosTurnos.push(turno);
                 }
+                else
+                {
+                  if(turno.historiaClinica != undefined)
+                  {
+                    if(turno.historiaClinica?.altura.includes(this.datoABuscar) || turno.historiaClinica?.peso.includes(this.datoABuscar) || turno.historiaClinica?.temperatura.includes(this.datoABuscar) || turno.historiaClinica?.presion.includes(this.datoABuscar))
+                    {
+                      this.todosLosTurnos.push(turno);
+                    }
+                    else
+                    {
+                      if(turno.historiaClinica.datoDinamico1 != "" && (turno.historiaClinica?.datoDinamico1?.clave.includes(this.datoABuscar) || turno.historiaClinica?.datoDinamico1?.valor.includes(this.datoABuscar)))
+                      {
+                        this.todosLosTurnos.push(turno);
+                      }
+                      else
+                      {
+                        if(turno.historiaClinica.datoDinamico2 != "" && (turno.historiaClinica?.datoDinamico2?.clave.includes(this.datoABuscar) || turno.historiaClinica?.datoDinamico2?.valor.includes(this.datoABuscar)))
+                        {
+                          this.todosLosTurnos.push(turno);
+                        }
+                        else
+                        {
+                          if(turno.historiaClinica.datoDinamico3 != "" && (turno.historiaClinica?.datoDinamico3?.clave.includes(this.datoABuscar) || turno.historiaClinica?.datoDinamico3?.valor.includes(this.datoABuscar)))
+                          {
+                            this.todosLosTurnos.push(turno);
+                          }
+                        }
+                      }
+                    }
 
+                  }
+                }
               }
             }
           }
@@ -147,26 +179,6 @@ export class MisTurnosComponent implements OnInit {
         }
       }
      }    
-  }
-
-  arreglarPalabra(palabra : string)
-  {
-    let palabraArreglada : string;
-    let aux1 : string;
-    let aux2 : string;
-    let letra : string;
-    let letraModificar : string;
-
-    palabraArreglada = palabra.toLowerCase();
-
-    letra = palabraArreglada.charAt(0).toUpperCase();
-
-    letraModificar = palabraArreglada.substring(0);
-    aux2 = palabraArreglada.substring(1,palabraArreglada.length);
-    aux1 = palabraArreglada.replace(letraModificar,letra);
-    palabraArreglada = aux1 + aux2;
-
-    return palabraArreglada;
   }
 
   modificarTurnoBD(turno : any, id : any)
@@ -282,13 +294,15 @@ export class MisTurnosComponent implements OnInit {
       fecha : turnoAModificar.fecha,
       especialidad : turnoAModificar.especialidad,
       especialista : this.as.logeado,
-      altura : this.formFinalizado.get("altura")?.value,
-      peso : this.formFinalizado.get("peso")?.value,
-      temperatura : this.formFinalizado.get("temperatura")?.value,
-      presion : this.formFinalizado.get("presion")?.value,
-      datosExtras : this.datos
+      altura : this.formFinalizado.get("altura")?.value.toString(),
+      peso : this.formFinalizado.get("peso")?.value.toString(),
+      temperatura : this.formFinalizado.get("temperatura")?.value.toString(),
+      presion : this.formFinalizado.get("presion")?.value.toString(),
+      datoDinamico1 : this.dato1,
+      datoDinamico2 : this.dato2,
+      datoDinamico3 : this.dato3,
+
     }
-    console.log(historiaClinica.datosExtras);
 
     let turno = {
       paciente : turnoAModificar.paciente,
@@ -298,6 +312,7 @@ export class MisTurnosComponent implements OnInit {
       estado : "Realizado",
       comentarioEspecialista : this.formFinalizado.get("comentario")?.value,
       diagnostico : this.formFinalizado.get("diagnostico")?.value,
+      historiaClinica : historiaClinica
     }
 
     this.modificarTurnoBD({...turno}, turnoAModificar.id).then((response : any) => {
@@ -337,38 +352,37 @@ export class MisTurnosComponent implements OnInit {
     let clave = this.formDatosDinamicos.get("dato")?.value;
     let valor = this.formDatosDinamicos.get("valor")?.value;
 
-    if(this.datosDinamicos.length < 3)
-    {
-      this.datosDinamicos[clave] = valor;
-     
-    }
-
-    this.datos = this.datosDinamicos;
     
+    if(this.dato1 == "")
+    {
+      this.dato1 = {
+        clave : clave,
+        valor : valor,
+      }
+    }
+    else
+    {
+      if(this.dato2 == "")
+      {
+        this.dato2 = {
+          clave : clave,
+          valor : valor,
+        }
+      }
+      else
+      {
+        if(this.dato3 == "")
+        {
+          this.dato3 = {
+            clave : clave,
+            valor : valor,
+          }
+        }
+      }
+    }   
   }
 
-  /*
-  finalizarTurno(turno : any)
-  {
-    turno.estado = "Realizado";
-    turno.comentarioConsulta = this.formFinalizado.get("comentario")?.value;
-    turno.diagnostico = this.formFinalizado.get("diagnostico")?.value;
 
-    this.modificarTurnoBD({...turno}, turno.id).then((response : any) => {
-      
-      this.ts.success("Se ha realizado el turno","Realizado");
-      this.finalizado = false;
-     
-    })
-    .catch((response : any) => {
-      setTimeout(() => {
-        this.as.loading = true;
-        this.ts.error("No se realizo el turno","Error con la realización");
-      }, 1000);
-      this.as.loading = false;
-    });
-  }
-*/
   aceptarTurno(turno : any)
   {
     this.rechazado = false;

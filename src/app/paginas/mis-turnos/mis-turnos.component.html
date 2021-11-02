@@ -137,16 +137,39 @@
                      <p>
                          <b>Especialidad:</b> {{turno.especialidad.nombre}}
                      </p>
-                     <p *ngIf='this.verResena'>
-                         <b *ngIf='turno.comentarioPaciente != undefined'>Comentario Paciente:</b> {{turno.comentarioPaciente}}
-                         <b *ngIf='turno.comentarioAdministrador != undefined'>Comentario Administrador:</b> {{turno.comentarioAdministrador}}
-                         <b *ngIf='turno.comentarioEspecialista != undefined'>Comentario Especialista:</b> {{turno.comentarioEspecialista}}
-                         <b *ngIf='turno.comentarioConsulta != undefined && turno.estado == "Realizado"'>Comentario Consulta:</b> {{turno.comentarioConsulta}}
-                         <p *ngIf='this.verResena'>
-                           <b *ngIf='turno.diagnostico != undefined && turno.estado == "Realizado"'>Diagnóstico:</b> {{turno.diagnostico}}
-                         
+                     <p *ngIf='this.verResena && (turno.estado == "Cancelado" || turno.estado == "Rechazado")'>
+                       <b *ngIf='turno.comentarioPaciente != undefined'>Comentario Paciente:</b> {{turno?.comentarioPaciente}}
+                       <b *ngIf='turno.comentarioAdministrador != undefined'>Comentario Administrador:</b> {{turno?.comentarioAdministrador}}
+                       <b *ngIf='turno.comentarioEspecialista != undefined'>Comentario Especialista:</b> {{turno?.comentarioEspecialista}}
                      </p>
-                      
+                        <div *ngIf='this.verResena && turno.estado == "Realizado"'>
+
+                          <b *ngIf='turno.comentarioConsulta != undefined && turno.estado == "Realizado"'>Comentario Consulta:</b> {{turno?.comentarioConsulta}}
+                          <p *ngIf='this.verResena'>
+                            <b *ngIf='turno.diagnostico != undefined && turno.estado == "Realizado"'>Diagnóstico:</b> {{turno?.diagnostico}}
+                          </p>
+                           <p *ngIf='this.verResena'>
+                             <b *ngIf='turno.historiaClinica != undefined && turno.estado == "Realizado"'>Altura:</b> {{turno.historiaClinica?.altura}}
+                           </p>
+                           <p *ngIf='this.verResena'>
+                             <b *ngIf='turno.historiaClinica != undefined && turno.estado == "Realizado"'>Peso:</b> {{turno.historiaClinica?.peso}}
+                           </p>
+                           <p *ngIf='this.verResena'>
+                             <b *ngIf='turno.historiaClinica != undefined && turno.estado == "Realizado"'>Temperatura:</b> {{turno.historiaClinica?.temperatura}}
+                           </p>
+                           <p *ngIf='this.verResena'>
+                             <b *ngIf='turno.historiaClinica != undefined && turno.estado == "Realizado"'>Presión:</b> {{turno.historiaClinica?.presion}}
+                           </p>
+                           <p *ngIf='this.verResena'>
+                             <b *ngIf='turno.historiaClinica != undefined && turno.estado == "Realizado" && turno.historiaClinica.datoDinamico1 != ""'>{{turno.historiaClinica?.datoDinamico1?.clave}}:</b> {{turno.historiaClinica?.datoDinamico1?.valor}}
+                           </p>
+                           <p *ngIf='this.verResena'>
+                             <b *ngIf='turno.historiaClinica != undefined && turno.estado == "Realizado" && turno.historiaClinica.datoDinamico2 != ""'>{{turno.historiaClinica?.datoDinamico2?.clave}}:</b> {{turno.historiaClinica?.datoDinamico2?.valor}}
+                           </p>
+                           <p *ngIf='this.verResena'>
+                             <b *ngIf='turno.historiaClinica != undefined && turno.estado == "Realizado" && turno.historiaClinica.datoDinamico3 != ""'>{{turno.historiaClinica?.datoDinamico3?.clave}}:</b> {{turno.historiaClinica?.datoDinamico3?.valor}}
+                           </p>               
+                        </div>
                    <div class="container">
                      <div class="row">
                        <div class="col" *ngIf="turno.estado == 'Pendiente'">
@@ -155,7 +178,7 @@
                        <div class="col" *ngIf="turno.estado == 'Pendiente'">
                         <button class="btn btn-sm btn-danger " (click)='this.rechazado = !this.rechazado'>Rechazar</button>
                       </div>
-                       <div class="col" *ngIf='turno.comentarioPaciente != undefined || turno.comentarioAdministrador != undefined || turno.estado == "Realizado"'>
+                       <div class="col" *ngIf='turno.comentarioPaciente != undefined || turno.comentarioAdministrador != undefined || turno.comentarioEspecialista != undefined || turno.estado == "Realizado"'>
                          <button class="btn btn-sm btn-dark " (click)='this.verResena = !this.verResena'>Ver reseña</button>
                        </div>
                        <div class="col" *ngIf='turno.estado == "Pendiente"'>
@@ -165,7 +188,7 @@
                          <button class="btn btn-sm btn-danger " (click)='this.finalizado = !this.finalizado'>Finalizar</button>
                        </div>
                      </div>
-                     <div class="mt-2 mb-2" *ngIf='this.cancelado || this.rechazado && turno.estado == "pendiente"'>
+                     <div class="mt-2 mb-2" *ngIf='(this.cancelado || this.rechazado) && turno.estado == "Pendiente"'>
                          <form [formGroup]="formComentario" (ngSubmit)='this.cancelarTurno(turno)'>
                            <div class="row">
                              <div class="col">
@@ -228,9 +251,9 @@
                                                  <input type="text" class="form-control" placeholder="Ingrese su valor" formControlName="valor" required>
                                                 </div>                
                                               </div>
-                                              <div *ngFor="let dato of datos | armarDatosDinamicos">
-                                                <h6 class="mt-2 mb-2">Dato: {{dato.clave}}      Valor: {{dato.valor}}</h6>                                   
-                                                </div>
+                                             <p *ngIf = 'this.dato1 != ""'>Dato: {{this.dato1.clave}} Valor: {{this.dato1.valor}} </p>
+                                             <p *ngIf = 'this.dato2 != ""'>Dato: {{this.dato2.clave}} Valor: {{this.dato2.valor}} </p>
+                                             <p *ngIf = 'this.dato3 != ""'>Dato: {{this.dato3.clave}} Valor: {{this.dato3.valor}} </p>
                                           </div>
                                       </div>
                                       <button class="btn btn-dark mb-3 mt-2" [disabled]="formFinalizado.invalid" (click)="datosExtrasAgregar()">Agregar Dato</button>

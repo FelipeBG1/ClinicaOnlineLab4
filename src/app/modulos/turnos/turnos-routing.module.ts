@@ -9,9 +9,9 @@ import { SolicitarTurnoComponent } from 'src/app/paginas/solicitar-turno/solicit
 import { TurnosComponent } from 'src/app/paginas/turnos/turnos.component';
 
 const routes: Routes = [
-  {path: 'gestionarTurnos',component: TurnosComponent,canActivate: [LogedGuard,AdminGuard]},
-  {path: 'solicitarTurno',component: SolicitarTurnoComponent,canActivate: [LogedGuard,PacienteAdministradorGuard]},
-  {path: 'misTurnos',component: MisTurnosComponent,canActivate: [LogedGuard,PacienteEspecialistaGuard]}
+  {path: 'gestionarTurnos',component: TurnosComponent,canActivate: [LogedGuard,AdminGuard],data: { animation: 'TurnosPage' }},
+  {path: 'solicitarTurno',component: SolicitarTurnoComponent,canActivate: [LogedGuard,PacienteAdministradorGuard],data: { animation: 'SolicitarTurnosPage' }},
+  {path: 'misTurnos',component: MisTurnosComponent,canActivate: [LogedGuard,PacienteEspecialistaGuard],data: { animation: 'MisTurnosPage' }}
 ];
 
 @NgModule({

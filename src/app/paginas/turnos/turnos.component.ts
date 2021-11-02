@@ -19,6 +19,8 @@ export class TurnosComponent implements OnInit {
   form : FormGroup;
   claseCardCancelado = 'card text-dark bg-danger';
   claseCardEspera = 'card text-dark bg-warning';
+  datoABuscar : any = "";
+  turnosFiltradosBusqueda : any = "";
   constructor(private turnoService : TurnoService,private fb : FormBuilder, private ts : ToastrService) 
   {
     this.form = this.fb.group({
@@ -27,6 +29,7 @@ export class TurnosComponent implements OnInit {
     this.turnoService.traerTurnos().subscribe(value =>{
       this.turnos = value;
       this.todosLosTurnos = value;
+      this.turnosFiltradosBusqueda = value;
 
     });
   }
@@ -36,52 +39,85 @@ export class TurnosComponent implements OnInit {
 
   buscar()
   {
-    if(this.especialistaBuscar != "" && this.especialidadBuscar == "")
+    console.log(this.datoABuscar);
+    this.todosLosTurnos = [];
+    if(this.datoABuscar == "")
     {
-      this.especialistaBuscar = this.arreglarPalabra(this.especialistaBuscar);
-      this.todosLosTurnos = this.turnos.filter((turno : any) => turno.especialista.nombre === this.especialistaBuscar);
+      this.todosLosTurnos = this.turnos;
     }
     else
     {
-      if(this.especialistaBuscar == "" && this.especialidadBuscar != "")
+      for(let turno of this.turnosFiltradosBusqueda) 
       {
-        this.especialidadBuscar = this.arreglarPalabra(this.especialidadBuscar);
-        this.todosLosTurnos = this.turnos.filter((turno : any) => turno.especialidad.nombre === this.especialidadBuscar);
-      }
-      else
-      {
-        if(this.especialistaBuscar != "" && this.especialidadBuscar != "")
+        if(turno.especialista.nombre.includes(this.datoABuscar) || turno.especialista.apellido.includes(this.datoABuscar))
         {
-          this.especialistaBuscar = this.arreglarPalabra(this.especialistaBuscar);
-          this.especialidadBuscar = this.arreglarPalabra(this.especialidadBuscar);
-          this.todosLosTurnos = this.turnos.filter((turno : any) => turno.especialidad.nombre === this.especialidadBuscar && turno.especialista.nombre === this.especialistaBuscar);
+          this.todosLosTurnos.push(turno);
         }
         else
         {
-          this.todosLosTurnos = this.turnos;
+          if(turno.especialidad.nombre.includes(this.datoABuscar))
+          {
+            this.todosLosTurnos.push(turno);
+          }
+          else
+          {
+            if(turno.paciente.nombre.includes(this.datoABuscar) || turno.paciente.apellido.includes(this.datoABuscar))
+            {
+              this.todosLosTurnos.push(turno);
+            }
+            else
+            {
+              if(turno.fecha.dia.includes(this.datoABuscar) || turno.fecha.hora.includes(this.datoABuscar))
+              {
+                this.todosLosTurnos.push(turno);
+              }
+              else
+              {
+                if(turno.estado.includes(this.datoABuscar))
+                {
+                  this.todosLosTurnos.push(turno);
+                }
+                else
+                {
+                  if(turno.historiaClinica != undefined)
+                  {
+                    if(turno.historiaClinica?.altura.includes(this.datoABuscar) || turno.historiaClinica?.peso.includes(this.datoABuscar) || turno.historiaClinica?.temperatura.includes(this.datoABuscar) || turno.historiaClinica?.presion.includes(this.datoABuscar))
+                    {
+                      this.todosLosTurnos.push(turno);
+                    }
+                    else
+                    {
+                      if(turno.historiaClinica.datoDinamico1 != "" && (turno.historiaClinica?.datoDinamico1?.clave.includes(this.datoABuscar) || turno.historiaClinica?.datoDinamico1?.valor.includes(this.datoABuscar)))
+                      {
+                        this.todosLosTurnos.push(turno);
+                      }
+                      else
+                      {
+                        if(turno.historiaClinica.datoDinamico2 != "" && (turno.historiaClinica?.datoDinamico2?.clave.includes(this.datoABuscar) || turno.historiaClinica?.datoDinamico2?.valor.includes(this.datoABuscar)))
+                        {
+                          this.todosLosTurnos.push(turno);
+                        }
+                        else
+                        {
+                          if(turno.historiaClinica.datoDinamico3 != "" && (turno.historiaClinica?.datoDinamico3?.clave.includes(this.datoABuscar) || turno.historiaClinica?.datoDinamico3?.valor.includes(this.datoABuscar)))
+                          {
+                            this.todosLosTurnos.push(turno);
+                          }
+                        }
+                      }
+                    }
+
+                  }
+                }
+              }
+            }
+          }
+
         }
       }
-    }
+     }    
   }
-  arreglarPalabra(palabra : string)
-  {
-    let palabraArreglada : string;
-    let aux1 : string;
-    let aux2 : string;
-    let letra : string;
-    let letraModificar : string;
 
-    palabraArreglada = palabra.toLowerCase();
-
-    letra = palabraArreglada.charAt(0).toUpperCase();
-
-    letraModificar = palabraArreglada.substring(0);
-    aux2 = palabraArreglada.substring(1,palabraArreglada.length);
-    aux1 = palabraArreglada.replace(letraModificar,letra);
-    palabraArreglada = aux1 + aux2;
-
-    return palabraArreglada;
-  }
   modificarTurnoBD(turno : any, id : any)
   {
     return this.turnoService.modificarTurno(turno,id);
