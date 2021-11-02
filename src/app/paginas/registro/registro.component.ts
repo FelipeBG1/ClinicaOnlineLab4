@@ -102,6 +102,7 @@ export class RegistroComponent implements OnInit {
         password : this.form.get('password')?.value,
         perfil : this.tipoUsuario,
         imagenes : [],
+        historiasClinicas : [],
       }
     }
     else

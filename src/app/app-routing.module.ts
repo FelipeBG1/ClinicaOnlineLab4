@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminGuard } from './guards/admin.guard';
+import { EspecialistaGuard } from './guards/especialista.guard';
 import { LogedGuard } from './guards/loged.guard';
 import { PacienteAdministradorGuard } from './guards/paciente-administrador.guard';
 import { BienvenidoComponent } from './paginas/bienvenido/bienvenido.component';
@@ -32,7 +33,7 @@ const routes: Routes = [
   {path: 'perfil', component: MiPerfilComponent},
   {path: 'turnos', loadChildren: () => import('./modulos/turnos/turnos.module').then(m => m.TurnosModule),canActivate: [LogedGuard]},
   {path: 'perfilGeneral', component: PerfilComponent,canActivate: [LogedGuard]},
-  {path: 'pacientes', component: SeccionPacientesComponent,canActivate: [LogedGuard,EspecialidadesService]},
+  {path: 'pacientes', component: SeccionPacientesComponent,canActivate: [LogedGuard,EspecialistaGuard]},
   {path: 'errorLogeo', component: ErrorLogeoComponent},
   {path: 'errorAdmin', component: ErrorAdminComponent},
   {path: 'errorEspecialista', component: ErrorEspecialistaComponent},

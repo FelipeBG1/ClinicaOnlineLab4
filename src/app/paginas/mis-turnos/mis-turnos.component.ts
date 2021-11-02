@@ -18,7 +18,7 @@ export class MisTurnosComponent implements OnInit {
   formEncuesta : FormGroup;
   formFinalizado : FormGroup;
   formDatosDinamicos : FormGroup;
-  todosLosTurnos : any = "";
+  todosLosTurnos : any = [];
   turnosFiltrados : any = "";
   turnosFiltradosEspecialista : any = "";
   especialidadBuscar : string = "";
@@ -36,6 +36,8 @@ export class MisTurnosComponent implements OnInit {
   datosDinamicos : any[] = [];
   datos : any = [];
   pacienteAModificar : any = "";
+  datoABuscar : any = "";
+  turnosFiltradosBusqueda : any = [];
 
   constructor(public as : AuthService, private turnoService : TurnoService, 
     private fb : FormBuilder,private fb2 : FormBuilder,private fb3 : FormBuilder, 
@@ -67,6 +69,8 @@ export class MisTurnosComponent implements OnInit {
         {
           this.todosLosTurnos = this.turnos.filter((turno : any) => turno.paciente.dni == this.as.logeado.dni);
           this.turnosFiltrados = this.todosLosTurnos;
+          this.turnosFiltradosBusqueda = this.todosLosTurnos;
+          
         }
         else
         {
@@ -74,6 +78,7 @@ export class MisTurnosComponent implements OnInit {
           {
             this.todosLosTurnos = this.turnos.filter((turno : any) => turno.especialista.dni == this.as.logeado.dni);
             this.turnosFiltradosEspecialista = this.todosLosTurnos;
+            this.turnosFiltradosBusqueda = this.todosLosTurnos;
           }
         }
     });
@@ -89,62 +94,59 @@ export class MisTurnosComponent implements OnInit {
 
   buscar()
   {
-    if(this.especialistaBuscar != "" && this.especialidadBuscar == "")
+    console.log(this.datoABuscar);
+    this.todosLosTurnos = [];
+    if(this.datoABuscar == "")
     {
-      this.especialistaBuscar = this.arreglarPalabra(this.especialistaBuscar);
-      this.todosLosTurnos = this.turnosFiltrados.filter((turno : any) => turno.especialista.nombre === this.especialistaBuscar);
-    }
-    else
-    {
-      if(this.especialistaBuscar == "" && this.especialidadBuscar != "")
+      if(this.as.logeado.perfil == "paciente")
       {
-        this.especialidadBuscar = this.arreglarPalabra(this.especialidadBuscar);
-        this.todosLosTurnos = this.turnosFiltrados.filter((turno : any) => turno.especialidad.nombre === this.especialidadBuscar);
+        this.todosLosTurnos = this.turnosFiltrados
       }
       else
       {
-        if(this.especialistaBuscar != "" && this.especialidadBuscar != "")
+        this.todosLosTurnos = this.turnosFiltradosEspecialista;
+      }
+    }
+    else
+    {
+      for(let turno of this.turnosFiltradosBusqueda) 
+      {
+        if(turno.especialista.nombre.includes(this.datoABuscar) || turno.especialista.apellido.includes(this.datoABuscar))
         {
-          this.especialistaBuscar = this.arreglarPalabra(this.especialistaBuscar);
-          this.especialidadBuscar = this.arreglarPalabra(this.especialidadBuscar);
-          this.todosLosTurnos = this.turnosFiltrados.filter((turno : any) => turno.especialidad.nombre === this.especialidadBuscar && turno.especialista.nombre === this.especialistaBuscar);
+          this.todosLosTurnos.push(turno);
         }
         else
         {
-          this.todosLosTurnos = this.turnosFiltrados;
-        }
-      }
-    }
-  }
+          if(turno.especialidad.nombre.includes(this.datoABuscar))
+          {
+            this.todosLosTurnos.push(turno);
+          }
+          else
+          {
+            if(turno.paciente.nombre.includes(this.datoABuscar) || turno.paciente.apellido.includes(this.datoABuscar))
+            {
+              this.todosLosTurnos.push(turno);
+            }
+            else
+            {
+              if(turno.fecha.dia.includes(this.datoABuscar) || turno.fecha.hora.includes(this.datoABuscar))
+              {
+                this.todosLosTurnos.push(turno);
+              }
+              else
+              {
+                if(turno.estado.includes(this.datoABuscar))
+                {
+                  this.todosLosTurnos.push(turno);
+                }
 
-  buscarPacEspecialidad()
-  {
-    if(this.pacienteBuscar != "" && this.especialidadBuscar == "")
-    {
-      this.pacienteBuscar = this.arreglarPalabra(this.pacienteBuscar);
-      this.todosLosTurnos = this.turnosFiltradosEspecialista.filter((turno : any) => turno.paciente.nombre === this.pacienteBuscar);
-    }
-    else
-    {
-      if(this.pacienteBuscar == "" && this.especialidadBuscar != "")
-      {
-        this.especialidadBuscar = this.arreglarPalabra(this.especialidadBuscar);
-        this.todosLosTurnos = this.turnosFiltradosEspecialista.filter((turno : any) => turno.especialidad.nombre === this.especialidadBuscar);
-      }
-      else
-      {
-        if(this.pacienteBuscar != "" && this.especialidadBuscar != "")
-        {
-          this.pacienteBuscar = this.arreglarPalabra(this.pacienteBuscar);
-          this.especialidadBuscar = this.arreglarPalabra(this.especialidadBuscar);
-          this.todosLosTurnos = this.turnosFiltradosEspecialista.filter((turno : any) => turno.especialidad.nombre === this.especialidadBuscar && turno.paciente.nombre === this.pacienteBuscar);
-        }
-        else
-        {
-          this.todosLosTurnos = this.turnosFiltradosEspecialista;
+              }
+            }
+          }
+
         }
       }
-    }
+     }    
   }
 
   arreglarPalabra(palabra : string)
@@ -284,8 +286,9 @@ export class MisTurnosComponent implements OnInit {
       peso : this.formFinalizado.get("peso")?.value,
       temperatura : this.formFinalizado.get("temperatura")?.value,
       presion : this.formFinalizado.get("presion")?.value,
-      datosExtras : this.datosDinamicos
+      datosExtras : this.datos
     }
+    console.log(historiaClinica.datosExtras);
 
     let turno = {
       paciente : turnoAModificar.paciente,
@@ -293,7 +296,7 @@ export class MisTurnosComponent implements OnInit {
       especialidad : turnoAModificar.especialidad,
       fecha : turnoAModificar.fecha,
       estado : "Realizado",
-      comentario : this.formFinalizado.get("comentario")?.value,
+      comentarioEspecialista : this.formFinalizado.get("comentario")?.value,
       diagnostico : this.formFinalizado.get("diagnostico")?.value,
     }
 
@@ -337,9 +340,11 @@ export class MisTurnosComponent implements OnInit {
     if(this.datosDinamicos.length < 3)
     {
       this.datosDinamicos[clave] = valor;
-      //this.datos.push(this.datosDinamicos);
+     
     }
 
+    this.datos = this.datosDinamicos;
+    
   }
 
   /*

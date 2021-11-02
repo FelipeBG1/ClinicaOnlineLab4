@@ -91,6 +91,9 @@ export class SolicitarTurnoComponent implements OnInit {
     {
       this.tablaEspecialistas = false;
     }
+
+    this.horasArray = [];
+    this.diasArrayFiltrados = [];
   }
 
   asignarPaciente(paciente : Paciente)
@@ -146,6 +149,9 @@ export class SolicitarTurnoComponent implements OnInit {
         }
       }
     }
+
+    console.log(this.horarioEspecialidad);
+    console.log(this.horarioEspecialista);
   }
 
   seleccionarEspecialista(especialista : any)
@@ -197,8 +203,6 @@ export class SolicitarTurnoComponent implements OnInit {
       dia2.setDate(dia.getDate() + 1);
       dia.setDate(dia.getDate() + 1);
     }
-
-    console.log(this.diasArray);
   }
 
   filtrarDias()

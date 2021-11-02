@@ -75,18 +75,18 @@
     </div>
     </div>
 <br>
-<div *ngIf="verTurnos" style="background-color: rgba(0, 0, 0, 0.63);">
+<div *ngIf="verTurnos" style="background-color: rgba(0, 0, 0, 0.623);">
   <div class="row justify-content-around">            
     <div class="mt-2 ml-1 col-7 text-center" style="overflow-y: auto;">
       <button type="button" class="button3 ms-3 me-3" *ngFor='let dia of this.diasArrayFiltrados' (click)='this.mostrarHorarios(dia)'>{{dia}}</button>
     </div>
 </div>
 
-<div *ngIf="verHoras" style="background-color: rgba(0, 0, 0, 0.63);">
+<div *ngIf="verHoras">
   <div class="row justify-content-around">            
     <div class="mt-2 ml-1 col-7 text-center" style="overflow-y: auto;">
-      <button type="button" class="button3 ms-3 me-3" *ngFor='let hora of this.horasArray' (click)='this.seleccionarTurno(hora)'>{{hora}}</button>
+      <button type="button" class="buttonHora ms-3 me-3" *ngFor='let hora of this.horasArray' (click)='this.seleccionarTurno(hora)'>{{hora}}</button>
     </div>
     <p class="text-light text-center fs-4" *ngIf='this.horasArray.length == 0'>{{this.especialistaSeleccionado.nombre}} {{this.especialistaSeleccionado.apellido}} ya no tiene horarios para ese dia</p>
 </div>
-  
+</div>

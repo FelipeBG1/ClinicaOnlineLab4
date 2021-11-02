@@ -27,6 +27,9 @@
     <div class="col-6" *ngIf="this.tipoUsuario == 'admin'">
         <button class="col-6 boton fs-5" [routerLink] = "['/usuarios/registroAdmin']">Registrar administrador</button>
     </div>
+    <div class="col-6">
+        <button class="col-6 boton fs-5" (click)="this.generarExcel()">Generar Excel</button>
+    </div>
 
     <div>
         <app-tabla-pacientes *ngIf="this.tipoUsuario == 'paciente'"></app-tabla-pacientes>

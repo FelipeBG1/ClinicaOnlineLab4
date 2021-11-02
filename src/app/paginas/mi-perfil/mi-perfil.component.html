@@ -38,20 +38,23 @@
         <div *ngIf='this.mostrarHC' class="text-light mt-2">
             <div class="row justify-content-around m-2">            
                     <div class="card text-dark mt-2 ml-1 col-9 " style="background-color: rgb(122, 122, 122); border-color: rgba(118, 29, 170, 0.925); cursor: pointer;"
-                    *ngFor='let hc of this.as.logeado.historiasClinicas'>
-                        <div class="card-header" style="background-color: rgb(122, 122, 122);"> 
+                    *ngFor='let hc of this.as.logeado.historiasClinicas' >
+                    <div id="historiaClinica">
+                        <div class="card-header" style="background-color: rgb(122, 122, 122);" > 
                             <p>
                                 <b class="fs-5 me-5">Fecha: {{hc.fecha.dia}}</b> 
                                 <b class="fs-5 me-5">Especialista: {{hc.especialista.nombre}} {{hc.especialista.apellido}}</b>
                                 <b class="fs-5">Especialidad: {{hc.especialidad.nombre}}</b>
                             </p>
                          </div>
-                        <div class="card-body">
+                        <div class="card-body" style="background-color: rgb(122, 122, 122);">
                             <p class="fs-5">Altura: {{hc.altura}}</p> 
                             <p class="fs-5">Peso: {{hc.peso}}</p>
                             <p class="fs-5">Temperatura: {{hc.temperatura}}</p>
                             <p class="fs-5">Presión: {{hc.presion}}</p>
                         </div>
+                    </div>
+                        <button class="btn btn-light mt-2 mb-1" (click)="imprimirPdf(hc)">Imprimir PDF</button>
                     </div>
             </div> 
         </div>
