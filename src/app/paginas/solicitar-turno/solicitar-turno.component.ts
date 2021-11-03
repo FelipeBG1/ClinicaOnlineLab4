@@ -71,7 +71,6 @@ export class SolicitarTurnoComponent implements OnInit {
 
       this.turnoService.traerTurnos().subscribe(value =>{
         this.todosLosTurnos = value;
-        console.log(this.todosLosTurnos);
       });
    }
 
@@ -149,9 +148,6 @@ export class SolicitarTurnoComponent implements OnInit {
         }
       }
     }
-
-    console.log(this.horarioEspecialidad);
-    console.log(this.horarioEspecialista);
   }
 
   seleccionarEspecialista(especialista : any)

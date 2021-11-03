@@ -39,7 +39,6 @@ export class TurnosComponent implements OnInit {
 
   buscar()
   {
-    console.log(this.datoABuscar);
     this.todosLosTurnos = [];
     if(this.datoABuscar == "")
     {

@@ -41,8 +41,6 @@ export class LoginComponent implements OnInit {
   {
     this.form.get('mail')?.setValue(perfil.mail);
     this.form.get('password')?.setValue(perfil.password);
-    console.log(perfil.imagenes);
-
   }
 
 }
