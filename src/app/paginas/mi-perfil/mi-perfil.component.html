@@ -33,13 +33,17 @@
         <div class="col-12 text-center">
             <button class="btn btn-light m-2 col-6" *ngIf='this.usuarioActual.perfil == "especialista"' (click)='this.mostrarEspecialidades = !this.mostrarEspecialidades'>Mis Horarios</button>
             <button class="btn btn-light m-2 col-6" *ngIf='this.usuarioActual.perfil == "especialista" && this.mostrarEspecialidades' (click)="this.subirHorario()">Cargar horarios</button>
-            <button class="btn btn-light m-2 col-6" *ngIf='this.usuarioActual.perfil == "paciente"' (click)='this.mostrarHC = !this.mostrarHC'>Ver historia clínica</button>
+            <button class="btn btn-light m-2 col-6" *ngIf='this.usuarioActual.perfil == "paciente"' (click)='this.ver()'>Ver historia clínica</button>
         </div>
         <div *ngIf='this.mostrarHC' class="text-light mt-2">
-            <div class="row justify-content-around m-2">            
+            <div class="row justify-content-around m-2">    
+                    <div class="row">
+                        <input class="form-control col-12" type="text" placeholder="Especialidad" [(ngModel)]="datoABuscar" (ngModelChange)="buscar()">       
+                    </div>    
+                    <h2 *ngIf="this.historiasClinicasAFiltrar.length == 0" class="mt-3 text-light">No hay niguna historia clínica con esa especialidad</h2>    
                     <div class="card text-dark mt-2 ml-1 col-9 " style="background-color: rgb(122, 122, 122); border-color: rgba(118, 29, 170, 0.925); cursor: pointer;"
-                    *ngFor='let hc of this.as.logeado.historiasClinicas' >
-                    <div id="historiaClinica">
+                    *ngFor='let hc of this.historiasClinicasAFiltrar' >
+                    <div>
                         <div class="card-header" style="background-color: rgb(122, 122, 122);" > 
                             <p>
                                 <b class="fs-5 me-5">Fecha: {{hc.fecha.dia}}</b> 
@@ -71,7 +75,7 @@
                               </p>
                         </div>
                     </div>
-                        <button class="btn btn-light mt-2 mb-1" (click)="imprimirPdf(hc)">Imprimir PDF</button>
+                        <button class="btn btn-light mt-2 mb-1" (click)="previsualizarPDF(hc)">Pervisualizar PDF</button>
                     </div>
             </div> 
         </div>
@@ -150,5 +154,42 @@
               </div>
         </div>
     
+    </div>
+    <div *ngIf='this.mostrarPDF' >
+        <div id="historiaClinica">
+            <small class="text-start">{{this.diaDeEmisionParseado}}</small>
+            <div class="card">
+                <div class="card-header" style="background-color: rgb(182, 182, 182);" > 
+                    <img src="../../../assets/clinica.ico" width="150px" height="150px" class="rounded" style="align-self: center;">
+                    <p class="text-center">
+                        <b class="fs-2 me-5">{{this.as.logeado.nombre}} {{this.as.logeado.apellido}}</b> 
+                    </p>
+                 </div>
+                <div class="card-body" style="background-color: rgb(182, 182, 182);">
+                    <p class="fs-5">
+                        <b>Altura:</b> {{this.hc.altura}}
+                      </p>
+                      <p class="fs-5">
+                        <b>Peso:</b> {{this.hc.peso}}
+                      </p>
+                      <p class="fs-5">
+                        <b>Temperatura:</b> {{this.hc.temperatura}}
+                      </p>
+                      <p class="fs-5">
+                        <b>Presión:</b> {{this.hc.presion}}
+                      </p>
+                      <p class="fs-5" *ngIf='hc.datoDinamico1 != ""'>
+                        <b>{{this.hc?.datoDinamico1?.clave}}:</b> {{this.hc?.datoDinamico1?.valor}}
+                      </p>   
+                      <p class="fs-5" *ngIf='hc.datoDinamico2 != ""'>
+                        <b>{{this.hc?.datoDinamico2?.clave}}:</b> {{this.hc?.datoDinamico2?.valor}}
+                      </p> 
+                      <p class="fs-5" *ngIf='hc.datoDinamico3 != ""'>
+                        <b>{{this.hc?.datoDinamico3?.clave}}:</b> {{this.hc?.datoDinamico3?.valor}}
+                      </p>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-dark mt-2" (click)="this.imprimirPdf()">Descargar PDF</button>
     </div>
 </div>

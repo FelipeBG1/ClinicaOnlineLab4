@@ -33,7 +33,7 @@ const routes: Routes = [
   {path: 'perfil', component: MiPerfilComponent ,data: { animation: 'MiPerfilPage' }},
   {path: 'turnos', loadChildren: () => import('./modulos/turnos/turnos.module').then(m => m.TurnosModule),canActivate: [LogedGuard]},
   {path: 'perfilGeneral', component: PerfilComponent,canActivate: [LogedGuard] ,data: { animation: 'PerfilGeneralPage' }},
-  {path: 'pacientes', component: SeccionPacientesComponent,canActivate: [LogedGuard,EspecialistaGuard]},
+  {path: 'pacientes', component: SeccionPacientesComponent,canActivate: [LogedGuard,EspecialistaGuard],data: { animation: 'PacientesPage' }},
   {path: 'errorLogeo', component: ErrorLogeoComponent,data: { animation: 'ErrorLogeoPage' }},
   {path: 'errorAdmin', component: ErrorAdminComponent,data: { animation: 'ErrorAdminPage' }},
   {path: 'errorEspecialista', component: ErrorEspecialistaComponent,data: { animation: 'ErrorEPage' }},

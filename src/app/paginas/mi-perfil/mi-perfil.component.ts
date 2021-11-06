@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { FechaPipe } from 'src/app/pipes/fecha.pipe';
 
 @Component({
   selector: 'app-mi-perfil',
@@ -18,7 +19,7 @@ export class MiPerfilComponent implements OnInit {
   especialidadSeleccionada : any = "";
   dias : any = [];
   mostrarEspecialidades : boolean = false;
-
+  datoABuscar : any = "";
   horarioCompleto : string[] = ["08:00","19:00"];
   horarioMañana : string[] = ["08:00","12:00"];
   horarioTarde : string[] = ["13:00","19:00"];
@@ -44,14 +45,26 @@ export class MiPerfilComponent implements OnInit {
   especialistaConHorario : boolean = false;
   horarioAModificar : any = "";
   mostrarHC : boolean = false;
+  historiasClinicasAFiltrar : any = [];
+  historiasClinicas : any = [];
+  diaDeEmision : any = [];
+  diaDeEmisionParseado : any = "";
+  hc : any = "";
+  mostrarPDF : boolean = false;
 
-  constructor(public as : AuthService, private hs : HorariosService, private ts : ToastrService, private router : Router) {
+  constructor(public as : AuthService, private hs : HorariosService, private ts : ToastrService, private router : Router, private fp : FechaPipe) {
     
     this.usuarioActual = this.as.logeado;
     this.horario = new Horario();
     this.hs.traerHorarios().subscribe(value => {
       this.horariosBd = value;
     });
+
+    if(this.as.logeado.perfil == "paciente")
+    {
+      this.historiasClinicas = this.as.logeado.historiasClinicas;
+      this.historiasClinicasAFiltrar = this.as.logeado.historiasClinicas;
+    }
     
    }
 
@@ -138,6 +151,11 @@ export class MiPerfilComponent implements OnInit {
     }
   }
 
+  ver()
+  {
+    this.mostrarHC = !this.mostrarHC;
+    this.mostrarPDF = false;
+  }
   cargarHorario()
   {
     this.horario.especialista = this.as.logeado;
@@ -147,6 +165,7 @@ export class MiPerfilComponent implements OnInit {
       nombre: this.especialidadSeleccionada.nombre,
       rangoHorario: this.horarioSeleccionado  
     }
+    console.log(this.horario.horariosEspecialidad);
     this.horario.horariosEspecialidad.push(this.horarioEspecialidad);
 
     this.resetear();
@@ -168,6 +187,7 @@ export class MiPerfilComponent implements OnInit {
     this.sabadoHorarioSeleccionado = false;
     this.diaEncontrado = false;
     this.horarioSeleccionado = [];
+    
   }
 
   yaTieneHorario()
@@ -197,6 +217,7 @@ export class MiPerfilComponent implements OnInit {
             this.as.loading = false;
             this.ts.success("Se modificó el horario del especialista","Horario registrado");
             this.resetear(); 
+            this.horario = new Horario();
           }, 1000);
         })
         .catch((error : any)=>{
@@ -211,6 +232,7 @@ export class MiPerfilComponent implements OnInit {
             this.as.loading = false;
             this.ts.success("Se guardo el horario","Horario registrado");
             this.resetear(); 
+            this.horario = new Horario();
           }, 1000);
         })
         .catch((error : any)=>{
@@ -225,7 +247,7 @@ export class MiPerfilComponent implements OnInit {
     this.router.navigateByUrl('login');
   }
 
-  imprimirPdf(hc : any): void {
+  imprimirPdf(): void {
     const DATA : any = document.getElementById("historiaClinica");
     const doc = new jsPDF('p', 'pt', 'a4');
     const options = {
@@ -255,8 +277,44 @@ export class MiPerfilComponent implements OnInit {
         return doc;
       })
       .then((docResult) => {
-        docResult.save(this.as.logeado.nombre + this.as.logeado.apellido + hc.fecha.dia + ".pdf");
+        docResult.save(this.as.logeado.nombre + this.as.logeado.apellido + ".pdf");
       });
   }
 
+  buscar()
+  {
+    this.historiasClinicasAFiltrar = [];
+    if(this.datoABuscar == "")
+    {
+      this.historiasClinicasAFiltrar = this.historiasClinicas;
+    }
+    else
+    {
+      this.historiasClinicasAFiltrar = this.historiasClinicas.filter((hc : any) => hc.especialidad.nombre.includes(this.datoABuscar));
+    }
+  }
+
+  cargarDiaEmision()
+  {
+    this.diaDeEmision = [];  
+    this.diaDeEmisionParseado = "";
+
+    let dia : Date = new Date();
+
+    this.diaDeEmision.push(dia.toUTCString().split(' ')[0] + 
+                        dia.toUTCString().split(' ')[1] + ' ' + 
+                        dia.toUTCString().split(' ')[2] + ' ' +
+                        dia.toUTCString().split(' ')[3]);   
+      
+      
+    this.diaDeEmisionParseado = this.fp.transform(this.diaDeEmision)[0];
+  }
+
+  previsualizarPDF(hc : any)
+  {
+    this.cargarDiaEmision();
+    this.mostrarHC = false;
+    this.hc = hc;
+    this.mostrarPDF = true;
+  }
 }

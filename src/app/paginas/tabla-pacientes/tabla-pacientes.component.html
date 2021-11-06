@@ -1,7 +1,7 @@
 <div class="p-3" style="background-color: rgba(0, 0, 0, 0);">
   <div class="text-light mt-2" >
     <div class="row justify-content-around m-2 text-center">            
-            <div class="card bg-dark text-white mt-2 ml-1 col-7 " style="width: 20em; height: 16em; border-color: rgba(118, 29, 170, 0.925); cursor: pointer;"
+            <div class="card bg-dark text-white mt-2 ml-1 col-7 " style="width: 20em; height: 19em; border-color: rgba(118, 29, 170, 0.925); cursor: pointer;"
             *ngFor='let paciente of this.pacientes'>
                 <div class="card-body">
                   <div class="row">
@@ -11,8 +11,11 @@
                     </div>
                   </div>
                     <h6 class="card-title mt-3">{{paciente.nombre}} {{paciente.apellido}}</h6>
-                    <button class="btn btn-light mt-2 col-6" (click)='this.mostrarHistoriaClinica(paciente)'>Ver historia clinica</button>
-                </div>
+                    <div>
+                      <button class="btn btn-light mt-2 col-10" (click)='this.mostrarHistoriaClinica(paciente)'>Ver historia clinica</button>
+                      <button class="btn btn-light mt-2 col-10" (click)='this.generarExcelPaciente(paciente)'>Descargar Consultas</button>
+                    </div>
+                  </div>
             </div>
     </div> 
   </div>

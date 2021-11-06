@@ -66,3 +66,19 @@
 .button3:hover {
   background-color: rgba(145, 38, 207, 0.925);
 }
+
+.botonon {
+  background-color: rgba(0, 0, 0, 0.664);
+  color: white;
+  padding: 10px 15px;
+  margin: 8px 0;
+  border: none;
+  border-radius:2px;
+  cursor: pointer;
+  width: 400px;
+  height: 150px;
+}
+
+.botonon:hover {
+  background-color: rgba(27, 27, 27, 0.829);
+}

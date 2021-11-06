@@ -8,7 +8,7 @@ import { TablaPacientesComponent } from 'src/app/paginas/tabla-pacientes/tabla-p
 
 const routes: Routes = [
   {path: 'registroAdmin',component: RegistroAdminComponent},
-  {path: 'datos',component: SeccionUsuariosComponent}
+  {path: 'todosLosUsuarios',component: SeccionUsuariosComponent,data: { animation: 'UsuariosPage' }},
 ];
 
 @NgModule({

@@ -48,6 +48,9 @@ export class SolicitarTurnoComponent implements OnInit {
   verHoras : boolean = false;
   diaSeleccionado : any = "";
   tieneHorarios : boolean = false;
+  especialidadesEspecialista : any = [];
+  arrayTurnoSegunDia : any = [];
+  sinDias : boolean = false;
 
   constructor(private fs : FirestoreService, private hs : HorariosService, 
     private es : EspecialidadesService, private ts : ToastrService, 
@@ -82,9 +85,12 @@ export class SolicitarTurnoComponent implements OnInit {
     if(!this.tablaEspecialistas)
     {
       this.tablaEspecialistas = true;
-      this.tablaEspecialidades = false;
       this.tablaPacientes = false;
-      this.cargarTodosEspecialistas();
+      this.especialidadesEspecialista = [];
+      this.tablaEspecialidades = false;
+      this.diasArrayFiltrados = [];
+      this.horasArray = [];
+      //this.cargarTodosEspecialistas();
     }
     else
     {
@@ -106,6 +112,7 @@ export class SolicitarTurnoComponent implements OnInit {
     this.tablaPacientes = !this.tablaPacientes; 
   }
 
+  /*
   cargarTodosEspecialistas()
   {
     let esp : any;
@@ -133,7 +140,7 @@ export class SolicitarTurnoComponent implements OnInit {
     } 
     
   }
-
+*/
   filtrarHorarios()
   {
     for (let horario of this.horarios) 
@@ -148,6 +155,9 @@ export class SolicitarTurnoComponent implements OnInit {
         }
       }
     }
+
+    console.log(this.horarioEspecialista);
+    console.log(this.horarioEspecialidad);
   }
 
   seleccionarEspecialista(especialista : any)
@@ -160,9 +170,40 @@ export class SolicitarTurnoComponent implements OnInit {
     this.tablaEspecialistas = false;
     this.tablaEspecialidades = false;
     this.especialistaSeleccionado = especialista;
-    this.especialidadSeleccionada = this.especialistaSeleccionado.especialidad;
-    this.filtrarHorarios();
+    this.listarEspecialidades();
 
+    if(this.especialidadesEspecialista.length == 1)
+    {
+      this.especialidadSeleccionada = this.especialidadesEspecialista[0];
+      this.filtrarHorarios();
+  
+      if(this.tieneHorarios)
+      {
+        this.mostrarTurnos();
+        this.verTurnos = true;
+      }
+      else
+      {
+        this.ts.error("Ese especialista no tiene horarios","Especialista sin horarios");
+      }
+    }
+    else
+    {
+      this.tablaEspecialidades = true;
+    }
+  }
+
+  seleccionarEspecialidad(especialidad : any)
+  {
+    if(this.especialidadSeleccionada != "")
+    {
+      this.especialidadSeleccionada = especialidad;
+      this.diasArrayFiltrados = [];
+      this.horasArray = [];
+    }
+    this.especialidadSeleccionada = especialidad;
+    this.tablaEspecialistas = false;
+    this.filtrarHorarios();
     if(this.tieneHorarios)
     {
       this.mostrarTurnos();
@@ -171,6 +212,14 @@ export class SolicitarTurnoComponent implements OnInit {
     else
     {
       this.ts.error("Ese especialista no tiene horarios","Especialista sin horarios");
+    }
+  }
+
+  listarEspecialidades()
+  {
+    for(let especialidad of this.especialistaSeleccionado.especialidad)
+    {
+      this.especialidadesEspecialista.push(especialidad);
     }
   }
  
@@ -211,13 +260,21 @@ export class SolicitarTurnoComponent implements OnInit {
       {
         let diaSplit = dia.split(' ');
         diaEspecialidad = this.dp.transform(diaEspecialidad);
-
+        
         if(diaEspecialidad == diaSplit[0])
         {
-          this.diasArrayFiltrados.push(dia);
+          this.arrayTurnoSegunDia = this.todosLosTurnos.filter((turno : any) => turno.especialidad.nombre == this.especialidadSeleccionada.nombre && turno.especialista.dni == this.especialistaSeleccionado.dni && turno.fecha.dia === dia && turno.estado == "Pendiente");
+          let horarios = this.cargarHoras(this.horarioEspecialidad.rangoHorario[0],this.horarioEspecialidad.rangoHorario[1]);
+          
+          if((horarios.length - this.arrayTurnoSegunDia.length) > 0)
+          {
+            this.diasArrayFiltrados.push(dia);
+          }
         }
       }
     }
+
+    console.log(this.diasArrayFiltrados);
     
   }
 
@@ -225,14 +282,37 @@ export class SolicitarTurnoComponent implements OnInit {
   {
     this.cargarDias();
     this.filtrarDias();
-    this.verTurnos = true;
+
+    if(this.diasArrayFiltrados.length == 1)
+    {
+      this.mostrarHorarios(this.diasArrayFiltrados[0])
+    }
+    else
+    {
+      if(this.diasArrayFiltrados.length == 0)
+      {
+        this.sinDias = true;
+      }
+      else
+      {
+        this.verTurnos = true;
+      }
+    }
   }
 
   mostrarHorarios(dia : any)
   {
     this.diaSeleccionado = dia;
-    this.verHoras = true;
     this.horasArray = this.cargarHoras(this.horarioEspecialidad.rangoHorario[0],this.horarioEspecialidad.rangoHorario[1]);
+
+    if(this.horasArray.length == 1)
+    {
+      this.seleccionarTurno(this.horasArray[0]);  
+    }
+    else
+    {
+      this.verHoras = true;
+    }
   }
 
   cargarHoras(entrada : string, salida : string)
@@ -310,6 +390,11 @@ export class SolicitarTurnoComponent implements OnInit {
     this.pacienteActual = "";
     this.diasArrayFiltrados = [];
     this.horasArray = [];
+    this.especialidadesEspecialista = [];
+    this.diaSeleccionado = "";
+    this.especialidadSeleccionada = "";
+    this.especialistaSeleccionado = "";
+    this.sinDias = false;
   }
   
 }

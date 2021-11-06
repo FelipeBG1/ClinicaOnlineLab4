@@ -278,6 +278,9 @@ export class MisTurnosComponent implements OnInit {
     });
   }
 
+  //ANALIZAR ESTO VER SI DEJO ESTE CAMBIO O LO SACO
+  //EL CAMBIO FUE MODIFICAR EL PACIENTE ANTES DE MODIFICAR EL TURNO PARA QUE ESE TURNO QUEDE CON EL PACIENTE CON SU HISTORIA CLINICA ACTUALIZADA
+  //ERA POR EL TEMA DEL EXCEL DE LA SECCION PACIENTES PERO YA LO SOLUCIONE, ASI QUE TENGO QUE VER ESTO
   finalizarTurno(turnoAModificar : any)
   {
     for(let paciente of this.pacientes) 
@@ -288,7 +291,6 @@ export class MisTurnosComponent implements OnInit {
         break;
       }  
     }
-    
     let historiaClinica = {
       fecha : turnoAModificar.fecha,
       especialidad : turnoAModificar.especialidad,
@@ -303,8 +305,19 @@ export class MisTurnosComponent implements OnInit {
 
     }
 
+    this.cargarHistoriaClinica(this.pacienteAModificar,historiaClinica);
+    
+    for(let paciente of this.pacientes) 
+    {
+      if(paciente.dni == turnoAModificar.paciente.dni)
+      {
+        this.pacienteAModificar = paciente;
+        break;
+      }  
+    }
+
     let turno = {
-      paciente : turnoAModificar.paciente,
+      paciente : this.pacienteAModificar,
       especialista : this.as.logeado,
       especialidad : turnoAModificar.especialidad,
       fecha : turnoAModificar.fecha,
@@ -318,7 +331,13 @@ export class MisTurnosComponent implements OnInit {
       
       this.ts.success("Se ha finalizado el turno","Finalizado");
       this.finalizado = false;
-      this.cargarHistoriaClinica(this.pacienteAModificar,historiaClinica);
+      this.formDatosDinamicos.reset();
+      this.formFinalizado.reset();
+      this.formComentario.reset();
+      this.dato1 = "";
+      this.dato2 = "";
+      this.dato3 = "";
+      
     })
     .catch((response : any) => {
       setTimeout(() => {

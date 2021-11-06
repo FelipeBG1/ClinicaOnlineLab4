@@ -26,7 +26,7 @@ export const slideInAnimation =
       ]),
       query(':enter', animateChild()),
     ]),
-    transition('BienvenidoPage => *,RegistroPage => LoginPage, PerfilGeneralPage => SolicitarTurnoPage , MiPerfilPage => PerfilGeneralPage , PerfilGeneralPage => MisTurnosPage, TurnosPage => PerfilGeneralPage,ErrorAdminPage => LoginPage,ErrorEPage => LoginPage,ErrorLogeoPage => LoginPage,ErrorPAPage => LoginPage,ErrorPEPage => LoginPage', [
+    transition('BienvenidoPage => LoginPage,BienvenidoPage => RegistroPage,BienvenidoPage => SolicitarTurnosPage,BienvenidoPage => PacientesPage,BienvenidoPage => PerfilGeneralPage,RegistroPage => LoginPage, PerfilGeneralPage => SolicitarTurnoPage , MiPerfilPage => PerfilGeneralPage , PerfilGeneralPage => MisTurnosPage, TurnosPage => PerfilGeneralPage,ErrorAdminPage => LoginPage,ErrorEPage => LoginPage,ErrorLogeoPage => LoginPage,ErrorPAPage => LoginPage,ErrorPEPage => LoginPage', [
         style({ position: 'relative' }),
         query(':enter, :leave', [
           style({

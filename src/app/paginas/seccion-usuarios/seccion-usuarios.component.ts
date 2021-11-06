@@ -1,13 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import * as fs from 'file-saver';
-
+import { trigger,style,transition,animate,state } from '@angular/animations';
 import { FirestoreService } from 'src/app/servicios/firestore.service';
 
 
 @Component({
   selector: 'app-seccion-usuarios',
   templateUrl: './seccion-usuarios.component.html',
-  styleUrls: ['./seccion-usuarios.component.scss']
+  styleUrls: ['./seccion-usuarios.component.scss'],
+  animations: [
+    trigger('enterState', [
+      state('void',style({
+        transform: 'translateY(100%)',
+        opacity:0
+      })),
+      transition(':enter',[
+        animate(250,style({
+          transform:'translateY(0)',
+          opacity:1
+        }))
+      ])
+    ])
+  ]
 })
 export class SeccionUsuariosComponent implements OnInit {
 
