@@ -33,10 +33,13 @@ import { ErrorPacienteAdministradorComponent } from './paginas/error-paciente-ad
 import { FechaPipe } from './pipes/fecha.pipe';
 import { DiaPipe } from './pipes/dia.pipe';
 import { HoraPipe } from './pipes/hora.pipe';
-import { ArmarDatosDinamicosPipe } from './pipes/armar-datos-dinamicos.pipe';
 import { SeccionPacientesComponent } from './paginas/seccion-pacientes/seccion-pacientes.component';
 import { ErrorEspecialistaComponent } from './paginas/error-especialista/error-especialista.component';
 import { RouterModule } from '@angular/router';
+import { EstadisticasComponent } from './paginas/estadisticas/estadisticas.component';
+import { BtnsBienvenidoDirective } from './directivas/btns-bienvenido.directive';
+import { CardsLoginDirective } from './directivas/cards-login.directive';
+import { BtnUsuariosDirective } from './directivas/btn-usuarios.directive';
 
 
 @NgModule({
@@ -63,9 +66,12 @@ import { RouterModule } from '@angular/router';
     PerfilComponent,
     ErrorPacienteEspecialistaComponent,
     ErrorPacienteAdministradorComponent,
-    ArmarDatosDinamicosPipe,
     SeccionPacientesComponent,
     ErrorEspecialistaComponent,
+    EstadisticasComponent,
+    BtnsBienvenidoDirective,
+    CardsLoginDirective,
+    BtnUsuariosDirective,
   ],
   imports: [
     BrowserModule,

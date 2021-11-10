@@ -25,10 +25,10 @@
         </div>
     </div>
     <div class="col-6" *ngIf="this.tipoUsuario == 'admin'">
-        <button class="col-6 boton fs-5 ms-2 mb-3" [routerLink] = "['/usuarios/registroAdmin']" @enterState>Registrar administrador</button>
+        <button class="col-6 boton fs-5 ms-2 mb-3" [routerLink] = "['/usuarios/registroAdmin']">Registrar administrador</button>
     </div>
     <div class="col-6">
-        <button class="col-6 boton fs-5 me-2 mb-3" (click)="this.generarExcel()">Generar Excel</button>
+        <button appBtnUsuarios class="col-6 boton fs-5 me-2 mb-3" (click)="this.generarExcel()" @enterState>Generar Excel</button>
     </div>
 
     <div class="mt-3">

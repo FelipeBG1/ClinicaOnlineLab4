@@ -8,8 +8,8 @@
     </main>
     <div class="row justify-content-around text-center mt-5" *ngIf='this.as.logeado == ""'>
         <div class="col-12">
-            <button class="col-5 button fs-3 me-2 blur" (click)='this.navegar(1)'>Login</button>
-            <button class="col-5 button fs-3 ms-2 blur" (click)='this.navegar(2)'>Registro</button>
+            <button appBtnsBienvenido class="col-5 button fs-3 me-2 blur" (click)='this.navegar(1)'>Login</button>
+            <button appBtnsBienvenido class="col-5 button fs-3 ms-2 blur" (click)='this.navegar(2)'>Registro</button>
         </div>
     </div>
 </div>

@@ -11,6 +11,7 @@ import { ErrorLogeoComponent } from './paginas/error-logeo/error-logeo.component
 import { ErrorPacienteAdministradorComponent } from './paginas/error-paciente-administrador/error-paciente-administrador.component';
 import { ErrorPacienteEspecialistaComponent } from './paginas/error-paciente-especialista/error-paciente-especialista.component';
 import { ErrorComponent } from './paginas/error/error.component';
+import { EstadisticasComponent } from './paginas/estadisticas/estadisticas.component';
 import { LoginComponent } from './paginas/login/login.component';
 import { MiPerfilComponent } from './paginas/mi-perfil/mi-perfil.component';
 import { MisTurnosComponent } from './paginas/mis-turnos/mis-turnos.component';
@@ -34,6 +35,7 @@ const routes: Routes = [
   {path: 'turnos', loadChildren: () => import('./modulos/turnos/turnos.module').then(m => m.TurnosModule),canActivate: [LogedGuard]},
   {path: 'perfilGeneral', component: PerfilComponent,canActivate: [LogedGuard] ,data: { animation: 'PerfilGeneralPage' }},
   {path: 'pacientes', component: SeccionPacientesComponent,canActivate: [LogedGuard,EspecialistaGuard],data: { animation: 'PacientesPage' }},
+  {path: 'estadisticas', component: EstadisticasComponent,canActivate: [LogedGuard,AdminGuard]},
   {path: 'errorLogeo', component: ErrorLogeoComponent,data: { animation: 'ErrorLogeoPage' }},
   {path: 'errorAdmin', component: ErrorAdminComponent,data: { animation: 'ErrorAdminPage' }},
   {path: 'errorEspecialista', component: ErrorEspecialistaComponent,data: { animation: 'ErrorEPage' }},

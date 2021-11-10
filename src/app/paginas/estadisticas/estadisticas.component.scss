@@ -1,0 +1,27 @@
+.button {
+    background-color: rgba(0, 0, 0, 0.664);
+    color: white;
+    padding: 10px 15px;
+    margin: 8px 0;
+    border: none;
+    border-radius:2px;
+    cursor: pointer;
+    width: 400px;
+    height: 150px;
+  }
+  
+.button:enabled:hover {
+  background-color: rgba(27, 27, 27, 0.829);
+}
+
+.button:disabled {
+  background-color: rgba(78, 76, 76, 0.836);
+ 
+}
+  
+  
+.blur
+{
+    background: rgba(0, 0, 0, 0.568); 
+    backdrop-filter: blur(10px); 
+}

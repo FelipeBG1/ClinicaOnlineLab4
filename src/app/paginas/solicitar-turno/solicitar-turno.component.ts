@@ -155,9 +155,6 @@ export class SolicitarTurnoComponent implements OnInit {
         }
       }
     }
-
-    console.log(this.horarioEspecialista);
-    console.log(this.horarioEspecialidad);
   }
 
   seleccionarEspecialista(especialista : any)
@@ -273,8 +270,6 @@ export class SolicitarTurnoComponent implements OnInit {
         }
       }
     }
-
-    console.log(this.diasArrayFiltrados);
     
   }
 

@@ -24,6 +24,8 @@ export class FirestoreService {
   perfilesGeneralesCollectionReference: any;
   perfilesGenerales: Observable<any>;
   perfilesGeneralesArray : any = [];
+  logsCollectionReference: any;
+  logs : Observable<any>;
 
 
   constructor(private angularF : AngularFirestore) {
@@ -36,6 +38,8 @@ export class FirestoreService {
     this.admin = this.adminCollectionReference.valueChanges({idField : 'id'});
     this.perfilesGeneralesCollectionReference = this.angularF.collection<any>('perfilesGenerales');
     this.perfilesGenerales = this.perfilesGeneralesCollectionReference.valueChanges({idField: 'id'});
+    this.logsCollectionReference = this.angularF.collection<any>('logs');
+    this.logs = this.logsCollectionReference.valueChanges();
     
 
     this.traerEspecialistas().subscribe(value => {
@@ -119,5 +123,15 @@ export class FirestoreService {
     return this.angularF.collection('pacientes').doc(id).update(paciente);
   }
 
+  
+  RegistrarLog(user : any)
+  {
+    return this.angularF.collection("logs").add(user);
+  }
+
+  traerLogs()
+  {
+    return this.logs;
+  }
 
 }

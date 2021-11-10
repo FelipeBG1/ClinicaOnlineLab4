@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth'
 import { FirestoreService } from './firestore.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { FechaPipe } from '../pipes/fecha.pipe';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class AuthService {
   logeado: any = false;
   loading =  false;
   usuarioRetornado: any;
-  constructor(private auth : AngularFireAuth, private fs : FirestoreService, private router : Router, private ts : ToastrService) { }
+  constructor(private auth : AngularFireAuth, private fs : FirestoreService, private router : Router, private ts : ToastrService, private fp : FechaPipe) { }
 
   logOut()
   {
@@ -26,9 +27,33 @@ export class AuthService {
     this.auth.signInWithEmailAndPassword(usuario.mail,usuario.password).then(async (res : any) =>{
     this.fs.traerUsuario(usuario.mail);
       this.logeado = true;
+      this.logeado = true;
+      let array : any = [];
+      let fecha : Date = new Date();
+      let hora : any;
+      let arrayHora : any;
+      
+      array.push(this.fp.cambiarDia(fecha.toString().split(' ')[0]) + ' ' +
+                  fecha.toString().split(' ')[2] + '/' + 
+                  this.fp.cambiarMes(fecha.toString().split(' ')[1]) + '/' +
+                  fecha.toString().split(' ')[3]);  
+
+     
+      hora = fecha.toString().split(' ')[4];
+      arrayHora = hora.split(":");
+      
+      let log : any = {
+        usuario : this.fs.usuario,
+        dia : array[0],
+        hora : arrayHora[0] + ":" + arrayHora[1]
+      }
+
+      this.fs.RegistrarLog(log).then((response : any) => {
+      })
+      .catch((response : any) => {
+        console.log(response)
+      });
       setTimeout(() => {
-        if(usuario.mail !== "especialista@gmail.com" && usuario.mail !== "paciente@gmail.com" && usuario.mail !== "admin@gmail.com")
-        {
           if(this.fs.usuario.perfil === "paciente")
           {
             if(res.user.emailVerified)
@@ -77,13 +102,6 @@ export class AuthService {
               }
             }
           }
-        }
-        else
-        {
-          this.loading = false;
-          this.logeado = this.fs.usuario;
-          this.router.navigate(["/bienvenido"]);
-        }
       }, 2000);
     })
     .catch((error : any) =>

@@ -29,7 +29,7 @@
                 </div>
                 <div *ngIf='this.ingresoRapido'>
                     <div class="row justify-content-around">            
-                            <div class="card bg-dark text-white mt-2 ml-1 col-7 " style="width: 10em; height: 14em; border-color: rgba(118, 29, 170, 0.925); cursor: pointer;"
+                            <div appCardsLogin class="card bg-dark text-white mt-2 ml-1 col-7 " style="width: 11em; height: 15em; border-color: rgba(118, 29, 170, 0.925); cursor: pointer;"
                             *ngFor='let perfil of perfilesGenerales'>
                                 <div class="card-body" (click)='this.cargarPerfil(perfil)'>
                                     <img class="card-img-top" src="{{perfil.imagen}}" width="10px" height="120px" *ngIf='perfil.perfil != "paciente"'>

@@ -165,7 +165,6 @@ export class MiPerfilComponent implements OnInit {
       nombre: this.especialidadSeleccionada.nombre,
       rangoHorario: this.horarioSeleccionado  
     }
-    console.log(this.horario.horariosEspecialidad);
     this.horario.horariosEspecialidad.push(this.horarioEspecialidad);
 
     this.resetear();
