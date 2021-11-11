@@ -383,7 +383,6 @@ export class EstadisticasComponent implements OnInit {
       .then((canvas) => {
         const img = canvas.toDataURL('image/PNG');
 
-        // Add image Canvas to PDF
         const bufferX = 1;
         const bufferY = 1;
         const imgProps = (doc as any).getImageProperties(img);

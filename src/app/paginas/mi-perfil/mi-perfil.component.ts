@@ -257,7 +257,6 @@ export class MiPerfilComponent implements OnInit {
       .then((canvas) => {
         const img = canvas.toDataURL('image/PNG');
 
-        // Add image Canvas to PDF
         const bufferX = 30;
         const bufferY = 30;
         const imgProps = (doc as any).getImageProperties(img);

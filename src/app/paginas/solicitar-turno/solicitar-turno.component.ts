@@ -90,7 +90,6 @@ export class SolicitarTurnoComponent implements OnInit {
       this.tablaEspecialidades = false;
       this.diasArrayFiltrados = [];
       this.horasArray = [];
-      //this.cargarTodosEspecialistas();
     }
     else
     {
@@ -99,48 +98,21 @@ export class SolicitarTurnoComponent implements OnInit {
 
     this.horasArray = [];
     this.diasArrayFiltrados = [];
+    this.especialidadSeleccionada = "";
   }
 
   asignarPaciente(paciente : Paciente)
   {
     this.pacienteActual = paciente;
     this.pacienteCargado = true;
+    this.tablaPacientes = false;
   }
 
   cargarPacientes()
   {
-    this.tablaPacientes = !this.tablaPacientes; 
+    this.tablaPacientes = !this.tablaPacientes;  
   }
 
-  /*
-  cargarTodosEspecialistas()
-  {
-    let esp : any;
-
-    this.arrayEspecialistasTodos = [];
-
-    for(let especialista of this.especialistas) 
-    {
-      for(let especialidad of especialista.especialidad) 
-      {
-        esp = {
-          nombre : especialista.nombre,
-          apellido : especialista.apellido,
-          edad : especialista.edad,
-          dni : especialista.dni,
-          especialidad : especialidad,
-          mail : especialista.mail,
-          password : especialista.password,
-          perfil : especialista.perfil,
-          imagen : especialista.imagen,
-          estadoCuenta : especialista.estadoCuenta
-        }
-        this.arrayEspecialistasTodos.push(esp);
-      }
-    } 
-    
-  }
-*/
   filtrarHorarios()
   {
     for (let horario of this.horarios) 
@@ -265,6 +237,12 @@ export class SolicitarTurnoComponent implements OnInit {
           
           if((horarios.length - this.arrayTurnoSegunDia.length) > 0)
           {
+            let horas = this.cargarHoras(this.horarioEspecialidad.rangoHorario[0],this.horarioEspecialidad.rangoHorario[1],dia);
+            if(horas.length == 1)
+            {
+              dia = dia + " " + horas[0];
+            }
+
             this.diasArrayFiltrados.push(dia);
           }
         }
@@ -297,20 +275,22 @@ export class SolicitarTurnoComponent implements OnInit {
 
   mostrarHorarios(dia : any)
   {
-    this.diaSeleccionado = dia;
-    this.horasArray = this.cargarHoras(this.horarioEspecialidad.rangoHorario[0],this.horarioEspecialidad.rangoHorario[1]);
-
-    if(this.horasArray.length == 1)
+    let arrayDia = dia.split(" ");
+    
+    if(arrayDia.length == 3)
     {
-      this.seleccionarTurno(this.horasArray[0]);  
+      this.diaSeleccionado = arrayDia[0] + " " + arrayDia[1];
+      this.seleccionarTurno(arrayDia[2]);  
     }
     else
     {
+      this.diaSeleccionado = dia;
+      this.horasArray = this.cargarHoras(this.horarioEspecialidad.rangoHorario[0],this.horarioEspecialidad.rangoHorario[1]);
       this.verHoras = true;
     }
   }
 
-  cargarHoras(entrada : string, salida : string)
+  cargarHoras(entrada : string, salida : string, dia : string = "")
   {
     let entradaArray;
     let salidaArray;
@@ -325,9 +305,19 @@ export class SolicitarTurnoComponent implements OnInit {
     
     do
     {
-      fecha = {
-        dia : this.diaSeleccionado,
-        hora : hora + ':' + entradaArray[1]
+      if(dia != "")
+      {
+        fecha = {
+          dia : dia,
+          hora : hora + ':' + entradaArray[1]
+        }
+      }
+      else
+      {
+        fecha = {
+          dia : this.diaSeleccionado,
+          hora : hora + ':' + entradaArray[1]
+        }
       }
 
       if(this.estaElTurnoDisponible(fecha))
@@ -372,7 +362,7 @@ export class SolicitarTurnoComponent implements OnInit {
     
     this.as.loading = true
     setTimeout(() => {
-      this.ts.success("Turno solicitado","Se ha cargado el turno exitosamente");
+      this.ts.success("Se ha cargado el turno","Turno solicitado exitosamente");
       this.as.loading = false;
     }, 2000);
     this.tablaPacientes = false;

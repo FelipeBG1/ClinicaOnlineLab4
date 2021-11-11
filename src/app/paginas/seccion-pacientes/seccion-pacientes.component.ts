@@ -12,7 +12,6 @@ import { TurnoService } from 'src/app/servicios/turno.service';
 })
 export class SeccionPacientesComponent implements OnInit {
 
-  //pacientes : any = [];
   pacientes : any = "";
   turnos : any = "";
   pacientesTurnos : any = [];

@@ -50,8 +50,8 @@
         </div>
         <div class="mt-4 col-12 text-center blur" *ngIf='this.mostrarLogs' style="background-color: rgba(252, 252, 252, 0.589); border-radius: 2px;">
                 <div class="row mt-2 mb-2">
-                    <div class="col-3 mt-1" *ngFor="let log of this.logs">
-                        <p class="fs-5">
+                    <div class="col-3 mt-1" *ngFor="let log of this.logs" style="border-style: solid; border-color: rgba(252, 252, 252, 0.548);">
+                        <p class="fs-5 mt-2">
                         <b>Usuario:</b> {{log.usuario.nombre}} {{log.usuario.apellido}}
                         </p>    
                         <p class="fs-5">
@@ -61,7 +61,7 @@
                             <b>Hora:</b> {{log.hora}}
                         </p>
                     </div>
-                    <div class="col-12">
+                    <div class="col-12 mt-2">
                         <button class="btn btn-dark" (click)="this.generarExcel()">Generar Excel</button>
                     </div>
             </div>        
