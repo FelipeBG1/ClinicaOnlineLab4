@@ -5,6 +5,7 @@ import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
 })
 export class BtnUsuariosDirective {
 
+  //Seccion Usuarios Boton Generar Excel
   constructor(private el : ElementRef, private re : Renderer2) { }
 
   @HostListener('mouseenter') onMouseEnter() {

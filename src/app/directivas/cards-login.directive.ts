@@ -5,6 +5,7 @@ import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
 })
 export class CardsLoginDirective {
 
+  //Cards con los perfiles para el logeo rápido, Login
   constructor(private el : ElementRef, private re : Renderer2) { }
 
   @HostListener('mouseenter') onMouseEnter() {
