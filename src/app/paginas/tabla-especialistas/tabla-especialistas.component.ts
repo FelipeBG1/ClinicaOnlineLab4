@@ -1,4 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { Especialista } from 'src/app/interfaces/especialista';
 import { FirestoreService } from 'src/app/servicios/firestore.service';
 
@@ -13,7 +14,7 @@ export class TablaEspecialistasComponent implements OnInit {
   
   especialistas : any = "";
   
-  constructor(public fs : FirestoreService) {
+  constructor(public fs : FirestoreService, private ts  : ToastrService) {
     this.fs.traerEspecialistas().subscribe(value =>{
       this.especialistas = value;
     });
@@ -27,12 +28,22 @@ export class TablaEspecialistasComponent implements OnInit {
     if(estado == 1)
     {
       especialista.estadoCuenta = "Habilitada";
-      this.fs.modificar(especialista,especialista.id);
+      this.fs.modificar(especialista,especialista.id).then(async () =>{
+        this.ts.success("Se habilitó la cuenta del especialista","Cuenta Habilitada");
+      })
+      .catch((error : any)=>{
+        this.ts.error("No se pudo habilitar la cuenta","Error");
+      });
     }
     else
     {
       especialista.estadoCuenta = "Inhabilitada";
-      this.fs.modificar(especialista,especialista.id);
+      this.fs.modificar(especialista,especialista.id).then(async () =>{
+        this.ts.warning("Se inhabilitó la cuenta del especialista","Cuenta Inhabilitada");
+      })
+      .catch((error : any)=>{
+        this.ts.error("No se pudo inhabilitar la cuenta","Error");
+      });
     }
   }
 }

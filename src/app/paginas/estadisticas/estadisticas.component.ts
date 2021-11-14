@@ -8,6 +8,8 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import * as fileSaver from 'file-saver';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { HighchartsChartModule } from 'highcharts-angular';
+import * as Highcharts from 'highcharts';
 
 
 @Component({
@@ -102,15 +104,6 @@ export class EstadisticasComponent implements OnInit {
     let id : any = "";
     switch(numero)
     {
-      case 1:
-        arrayDatos = [];
-        arrayLabels = [];
-        arrayLabels = this.arraydias;
-        arrayDatos = this.arrayCantidades;
-        id = document.getElementById("dias");
-        this.mostrarGraficoDias = true;
-        this.diasDisabled = true;
-        break;
       case 2:
         arrayDatos = [];
         arrayLabels = [];
@@ -344,11 +337,13 @@ export class EstadisticasComponent implements OnInit {
     let nombreArchivo : string;
     let fechaInicial : any;
     let fechaFinal : any;
+    let alto : number = 700;
+    let ancho : number = 700;
     switch(id)
     {
-      case "dias":
-        array1 = this.arraydias;
-        array2 = this.arrayCantidades;
+      case "graficoBarrasDias":
+        alto = 700;
+        ancho = 800;
         nombreArchivo = "Turnos por dia";
         break;
       case "especialidades":
@@ -376,8 +371,8 @@ export class EstadisticasComponent implements OnInit {
     const options = {
       background: 'white',
       scale: 1,
-      width: 700,
-      height: 700,
+      width: ancho,
+      height: alto,
       };
     html2canvas(DATA, options)
       .then((canvas) => {
@@ -445,6 +440,52 @@ export class EstadisticasComponent implements OnInit {
       fileSaver.saveAs(blob,nombreArchivo + '.xlsx');
     })
     
+  }
+
+  cargarGraficoDias()
+  {
+    this.mostrarGraficoDias = true;
+    var Highcharts = require('highcharts');  
+
+    Highcharts.chart('graficoBarrasDias', {
+      chart: {
+        type: 'bar'
+      },
+      title: {
+        text: 'Turnos por dia'
+      },
+      xAxis: {
+        categories: this.arraydias,
+        title: {
+          text: 'Dias'
+        }
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: 'Cantidad de turnos',
+          align: 'high'
+        },
+        labels: {
+          overflow: 'justify'
+        }
+      },
+      tooltip: {
+        valueSuffix: ' turnos'
+      },
+      plotOptions: {
+        bar: {
+          dataLabels: {
+            enabled: true
+          }
+        }
+      },
+      series: [{
+        name: 'Turnos',
+        data: this.arrayCantidades,
+        color: 'rgba(118, 29, 170, 0.925)'
+      }]
+    });
   }
 }
 

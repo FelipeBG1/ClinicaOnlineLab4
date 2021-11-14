@@ -5,6 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class DiaPipe implements PipeTransform {
 
+  //Utilizado en SolicitarTurno
   transform(dia : number)
   {
     let diaNombre;

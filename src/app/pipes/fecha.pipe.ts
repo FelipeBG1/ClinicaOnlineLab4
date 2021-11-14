@@ -5,6 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FechaPipe implements PipeTransform {
 
+   //Utilizado en SolicitarTurno
   transform(fechaArray : string[])
   {
     let arrayRetorno = [];

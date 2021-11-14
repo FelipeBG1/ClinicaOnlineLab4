@@ -5,6 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class HoraPipe implements PipeTransform {
 
+   //Utilizado en SolicitarTurno
   transform(entrada : string, salida : string) 
   {
       let entradaArray;
