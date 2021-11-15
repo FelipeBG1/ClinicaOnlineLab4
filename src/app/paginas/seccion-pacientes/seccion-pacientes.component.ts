@@ -40,21 +40,6 @@ export class SeccionPacientesComponent implements OnInit {
         this.cargarDatos();
       });
     });
-/*
-    this.ts.traerTurnos().subscribe(value =>{
-      this.turnos = value;
-
-      for(let turno of this.turnos) 
-      {
-        if(turno.estado == "Realizado" && turno.especialista.dni == this.as.logeado.dni)
-        {
-          this.pacientes.push(turno.paciente);
-          let indice = this.pacientes.lastIndexOf(turno.paciente);
-        }
-      }
-
-    });
-    */
 
   }
 

@@ -237,12 +237,7 @@ export class EstadisticasComponent implements OnInit {
     let fechaInicial = this.form.get("fechaInicial")?.value;
     let fechaFinal = this.form.get("fechaFinal")?.value;
     this.arrayEspecialistas = [];
-    /*
-    let arrayFechaInicial = fechaInicial.split("-");   
-    let arrayFechaFinal = fechaFinal.split("-");   
-    fechaInicial = arrayFechaInicial[2] + "/" + arrayFechaInicial[1] + "/" + arrayFechaInicial[0];
-    fechaFinal = arrayFechaFinal[2] + "/" + arrayFechaFinal[1] + "/" + arrayFechaFinal[0];
-    */
+   
     for(let especialista of this.especialistas)
     {
       if(!this.arrayEspecialistas.includes(especialista.nombre))
